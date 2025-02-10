@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "types": ["jest", "@testing-library/jest-dom"],
+    "baseUrl": "src",
+    "paths": {
+      "@api/*": ["api/*"]
+    }
+  },
+  "include": ["src/**/*", "server.ts"],
+  "exclude": ["node_modules"]
+}
