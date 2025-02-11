@@ -1,19 +1,34 @@
-import React from 'react';
+import { getApiBack } from 'api/getApiBack';
+import React, { startTransition, useTransition } from 'react';
+import { Product } from '../@types/Types';
 
 const ProductsList: React.FC = () => {
-    const products = [
-        { id: 1, name: 'Product 1', price: 100 },
-        { id: 2, name: 'Product 2', price: 200 },
-        { id: 3, name: 'Product 3', price: 300 },
-    ];
+    const [listFromApi, setListFromApi] = React.useState<Product[]>([]);
+    const [isPending, startTransition] =useTransition()
 
+    const fetchData = () => {
+        startTransition(async ()  => {
+                let response = await getApiBack("/product/all");
+            startTransition(() =>{
+                setListFromApi(response);
+            })
+        });
+        };
+
+    React.useEffect(() => {
+       fetchData();
+    }, []);
+      
     return (
+        isPending?
+        <div>Loading...</div>:
+        
         <div>
             <h2>Products List</h2>
             <ul>
-                {products.map(product => (
-                    <li key={product.id}>
-                        {product.name} - ${product.price}
+                {listFromApi.map(product => (
+                    <li key={product.productId}>
+                        {product.productName} - ${product.productPrice}
                     </li>
                 ))}
             </ul>
