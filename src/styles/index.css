@@ -14,6 +14,7 @@ a {
   /* COULEURS DES FONDS */
   --bg-primary: #22116b;
   --bg-contrast: #e3e649;
+  --bg-dark: #130a3d;
   /* COULEURS DES TEXTES */
   --text: black;
   --text-contrast: white;

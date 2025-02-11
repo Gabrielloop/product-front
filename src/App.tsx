@@ -3,9 +3,10 @@ import Layout from 'layout/Layout';
 import About from 'pages/About';
 import Admin from 'pages/Admin';
 import Dashboard from 'pages/Dashboard';
-import ProductsList from 'pages/ProductsList';
 import React, {useState} from 'react';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import Products from 'pages/Products';
+import ProductDetails from 'pages/ProductDetails';
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,7 +25,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navigate to="/about" />} />
                     <Route path="/about" element={<About/>} />
-                    <Route path="/products" element={<ProductsList/>} />
+                    <Route path="/products" element={<Products/>} />
+                    <Route path="/product/:productId" element={<ProductDetails/>} />
                     <Route path="/dashboard" element={<Dashboard/>} />
                     <Route path="/admin" element={<Admin/>} />
                     <Route path="*" element={<h2>404 - Not Found</h2>} />
