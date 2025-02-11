@@ -1,4 +1,9 @@
 
+import Layout from 'layout/Layout';
+import About from 'pages/About';
+import Admin from 'pages/Admin';
+import Dashboard from 'pages/Dashboard';
+import ProductsList from 'pages/ProductsList';
 import React, {useState} from 'react';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 
@@ -15,10 +20,17 @@ function App() {
     return (
             <BrowserRouter>
             {/* <AuthContext.Provider value={{isLoggedIn, setIsLoggedIn, loginUserId, setLoginUserId}}> */}
+            <Layout>
                 <Routes>
-                        <Route path="/" element="Produit Exercice"/>
+                    <Route path="/" element={<Navigate to="/about" />} />
+                    <Route path="/about" element={<About/>} />
+                    <Route path="/products" element={<ProductsList/>} />
+                    <Route path="/dashboard" element={<Dashboard/>} />
+                    <Route path="/admin" element={<Admin/>} />
+                    <Route path="*" element={<h2>404 - Not Found</h2>} />
                 </Routes>
             {/* </AuthContext.Provider> */}
+            </Layout>
             </BrowserRouter>
     )
         ;
