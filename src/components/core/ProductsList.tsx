@@ -22,29 +22,41 @@ const ProductsList: React.FC = () => {
   useEffect(() => {
     const subscription = filters$.subscribe((filter) => {
       setFilters(filter);
+      fetchData(filter);
     });
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchData = () => {
+  const fetchData = async (filtersProp: Filters) => {
     startTransition(async () => {
-      let response = await getApiBack("/product/all");
-      startTransition(() => {
+      // Gestion des filtres de recherche
+      const category = filtersProp.category ?? "all";
+      const productName = filtersProp.productName ?? "";
+
+      try {
+        let response;
+        if (productName || category !== "all") {
+          response = await getApiBack(
+            `/product/filter/${category}/${productName}`
+          );
+        } else {
+          response = await getApiBack("/product/all");
+        }
         setListFromApi(response);
-      });
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
     });
   };
-
-  React.useEffect(() => {
-    fetchData();
-  }, []);
 
   return isPending ? (
     <div>Loading...</div>
   ) : (
     <div>
       {filters.productName && <h2>Recherche: {filters.productName}</h2>}
-      {filters.category && <h2>Catégorie: {filters.category}</h2>}
+      {filters.category && filters.category != "all" && (
+        <h2>Catégorie: {filters.category}</h2>
+      )}
       <table>
         <thead>
           <tr>

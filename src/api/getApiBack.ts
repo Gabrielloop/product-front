@@ -6,7 +6,7 @@ const hostUrl = "http://localhost:8080";
 export const getApiBack = (url: string) => {
   const urlFinal = hostUrl + url;
 
- return axios
+  return axios
     .get(urlFinal, {
       headers: {
         "Content-Type": "application/json",
@@ -14,7 +14,6 @@ export const getApiBack = (url: string) => {
       withCredentials: true,
     })
     .then((response) => {
-      console.log('success',response);
       return response.data;
     })
     .catch((error) => {
