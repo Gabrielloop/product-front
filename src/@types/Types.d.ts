@@ -13,12 +13,10 @@ export interface Filters {
 }
 
 export interface CartProps {
-  articleId: number;
+  product: Product;
   quantity: number;
-  stock: number;
 }
 
 export interface CartSelectorProps {
-  stock: number;
-  articleId: number;
+  product: Product;
 }

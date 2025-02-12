@@ -18,10 +18,7 @@ const ProductLine: React.FC<Product> = (product) => {
       </td>
       <td>{product.productPrice}</td>
       <td>
-        <CartSelector
-          stock={product.productStock}
-          articleId={product.productId}
-        />
+        <CartSelector product={product} />
       </td>
     </>
   );

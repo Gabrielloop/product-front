@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { CartProps, Product, CartSelectorProps } from "../../@types/Types";
 import { cartObservable } from "../../pages/Cart";
-import { CartProps } from "../../@types/Types";
-import { CartSelectorProps } from "../../@types/Types";
 
 // L'observable du panier est importé depuis la page Cart
 
-const CartSelector: React.FC<CartSelectorProps> = ({ stock, articleId }) => {
+const CartSelector: React.FC<CartSelectorProps> = ({ product }) => {
   const [cart, setCart] = useState<CartProps[]>(() => {
     // Initialisation du local storage
     return JSON.parse(localStorage.getItem("cart") || "[]");
@@ -30,15 +29,15 @@ const CartSelector: React.FC<CartSelectorProps> = ({ stock, articleId }) => {
     // Contrôle de la quantité
     if (isNaN(quantity) || quantity < 0) {
       quantity = 0;
-    } else if (quantity > stock) {
-      quantity = stock;
+    } else if (quantity > product.productStock) {
+      quantity = product.productStock;
     }
     e.target.value = quantity.toString();
 
     if (quantity >= 0) {
       const updateCart = [...cart];
       const existingProductIndex = updateCart.findIndex(
-        (item) => item.articleId === articleId
+        (item) => item.product && item.product.productId === product.productId
       );
 
       if (existingProductIndex > -1) {
@@ -51,7 +50,7 @@ const CartSelector: React.FC<CartSelectorProps> = ({ stock, articleId }) => {
         }
       } else if (quantity > 0) {
         // Si le produit n'est pas dans le panier et que la quantité est supérieure à 0, on l'ajoute
-        updateCart.push({ articleId: articleId, quantity, stock });
+        updateCart.push({ product, quantity });
       }
 
       // On met à jour le panier
@@ -69,9 +68,12 @@ const CartSelector: React.FC<CartSelectorProps> = ({ stock, articleId }) => {
         type="number"
         name="number"
         min="0"
-        max={stock}
+        max={product.productStock}
         defaultValue={
-          cart.find((item) => item.articleId === articleId)?.quantity || 0
+          cart.find(
+            (item) =>
+              item.product && item.product.productId === product.productId
+          )?.quantity || 0
         }
         onChange={handleModifyCart}
       />
