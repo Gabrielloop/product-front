@@ -17,6 +17,7 @@ a {
   --bg-dark: #130a3d;
   /* COULEURS DES TEXTES */
   --text: black;
+  --text-light: #9e90dd;
   --text-contrast: white;
   /* HAUTEURS / LARGEURS */
   --nav-height: 50px;         /* Hauteur de la barre de navigation */
@@ -60,6 +61,16 @@ footer {
 
 h1{
   color: var(--text-contrast);
+}
+
+.filters{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  width:100%;
+  border-bottom: black 1px solid;
 }
 
 /* MEDIA QUERIES */
