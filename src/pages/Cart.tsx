@@ -1,45 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Observable, of } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
+import { CartProps } from "../@types/Types";
+import CartList from "components/core/CartList";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
-
-export const cartObservable: Observable<Product[]> = of([
-  { id: 1, name: "Product 1", price: 10 },
-  { id: 2, name: "Product 2", price: 20 },
-  { id: 3, name: "Product 3", price: 30 },
-]);
+export const cartObservable: BehaviorSubject<CartProps[]> = new BehaviorSubject<
+  CartProps[]
+>([]);
 
 const Cart: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<CartProps[]>([]);
 
+  // récupération du panier
   useEffect(() => {
-    const cartObservable: Observable<Product[]> = of([
-      { id: 1, name: "Product 1", price: 10 },
-      { id: 2, name: "Product 2", price: 20 },
-      { id: 3, name: "Product 3", price: 30 },
-    ]);
-
-    const subscription = cartObservable.subscribe(setProducts);
-
+    const subscription = cartObservable.subscribe((newCart) => {
+      setProducts(newCart);
+    });
     return () => subscription.unsubscribe();
   }, []);
 
   return (
     <div>
-      <h1>Cart</h1>
+      <h2>Cart</h2>
       <ul>
         {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - ${product.price}
-          </li>
+          <CartList key={product.articleId} {...product} />
         ))}
       </ul>
     </div>
   );
 };
-
 export default Cart;

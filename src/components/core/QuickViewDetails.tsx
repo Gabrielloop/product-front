@@ -21,8 +21,10 @@ const QuickViewDetails: React.FC = () => {
 
   return (
     <div>
-      <h1>Quick View Details</h1>
+      <h2>{article.productName}</h2>
       <p>Article ID: {article.productId}</p>
+      <p>Article Price: {article.productPrice}</p>
+      <p>Article Stock: {article.productStock}</p>
     </div>
   );
 };

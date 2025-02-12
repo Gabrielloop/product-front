@@ -14,7 +14,6 @@ const ProductsList: React.FC = () => {
   const [hover, setHover] = React.useState<number>(0);
   const [listFromApi, setListFromApi] = React.useState<Product[]>([]);
   const [isPending, startTransition] = useTransition();
-  const navigate = useNavigate();
   const [filters, setFilters] = useState<Filters>({} as Filters);
 
   // Utilisation d'un Observable pour la gestion des filtres
@@ -67,9 +66,6 @@ const ProductsList: React.FC = () => {
               <b>Prix</b>
             </td>
             <td>
-              <b>(Stock)</b>
-            </td>
-            <td>
               <b>Panier</b>
             </td>
           </tr>
@@ -79,9 +75,6 @@ const ProductsList: React.FC = () => {
             <tr
               className={hover === product.productId ? "line-hover" : ""}
               key={product.productId}
-              onClick={() => {
-                navigate("../product/" + product.productId);
-              }}
               onMouseOver={() => {
                 article$.next(product); // Met à jour l'observable pour le Quickview
                 setHover(product.productId);
