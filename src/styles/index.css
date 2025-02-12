@@ -20,8 +20,8 @@ a {
   --text-light: #9e90dd;
   --text-contrast: white;
   /* HAUTEURS / LARGEURS */
-  --nav-height: 50px;         /* Hauteur de la barre de navigation */
-  --footer-height: 50px;      /* Hauteur de la barre du footer */
+  --nav-height: 50px; /* Hauteur de la barre de navigation */
+  --footer-height: 50px; /* Hauteur de la barre du footer */
 }
 
 /* HORS MEDIA QUERIES */
@@ -41,7 +41,7 @@ nav > ul {
   justify-content: space-between;
   align-items: center;
 }
-nav > ul > li{
+nav > ul > li {
   list-style-type: none;
   margin: 0 1rem;
 }
@@ -59,25 +59,47 @@ footer {
   border-bottom: var(--bg-contrast) solid 3px;
 }
 
-h1{
+h1 {
   color: var(--text-contrast);
 }
 
-.filters{
+.filters {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--bg-dark);
   color: var(--text-light);
-  width:100%;
+  width: 100%;
   border-bottom: black 1px solid;
+}
+
+.line-hover {
+  background-color: var(--bg-contrast);
+  color: var(--text);
+}
+
+#products {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 1rem;
+}
+#products > article {
+  width: 100%;
 }
 
 /* MEDIA QUERIES */
 
 @media (max-width: 768px) {
-
+  nav {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
 }
 @media (max-width: 480px) {
-
+  /* deuxieme article de la section produits masqué en responsive  */
+  #products > article:nth-child(2) {
+    display: none;
+  }
 }

@@ -1,22 +1,24 @@
-import ProductsFilters from 'components/core/ProductsFilters';
-import ProductsList from 'components/core/ProductsList';
-import React from 'react';
-
-interface ProductsFiltersProps {
-    onFilterChange: (filters: { [key: string]: string }) => void;
-}
-
+import ProductsFilters from "components/core/ProductsFilters";
+import ProductsList from "components/core/ProductsList";
+import QuickViewDetails from "components/core/QuickViewDetails";
+import React from "react";
 
 const Products: React.FC = () => {
-    return (
-        <div>
-            {/* // filter on priceRange and category */}
-
-            <ProductsFilters onFilterChange={(filters) => console.log(filters)}/>
-            <h2>Products</h2>
-            <ProductsList />
-        </div>
-    );
+  return (
+    <>
+      <ProductsFilters />
+      <section id="products">
+        <article>
+          <h2>Products</h2>
+          <ProductsList />
+        </article>
+        <article>
+          <h2>Products Details</h2>
+          <QuickViewDetails />
+        </article>
+      </section>
+    </>
+  );
 };
 
 export default Products;
