@@ -39,24 +39,28 @@ const Cart: React.FC = () => {
     const products = productsInCart.map((product) => ({
       productId: product.product.productId,
       quantity: product.quantity,
-      total: product.quantity * product.product.productPrice,
+      total: (product.quantity * product.product.productPrice).toFixed(2),
     }));
 
-    const totalCommand = products.reduce((acc, item) => acc + item.total, 0);
+    const totalCommand = products.reduce((acc, item) => acc + parseFloat(item.total), 0);
 
-    postApiBack("/orders/add", {
-      mail,
-      products,
-      total: totalCommand,
-    })
+    const requestData = {
+      ordersUserEmail: mail,
+      ordersStatus: "Validation",
+      ordersTotal: totalCommand,
+    };
+
+    postApiBack("/orders/add", {requestData})
       .then((response) => {
         console.log("reponse de l'API :" + response);
         // on ajoute les produits dans la base de données
         // on post les produits dans la base de données
-        postApiBack("/productOrders/add", {
-          response,
-          products,
-        })
+        const requestProducts = products.map((product) => ({
+          ordersId: response,
+          productId: product.productId,
+          quantity: product.quantity,
+        }));
+        postApiBack("/ordersProduct/add", {requestProducts})
           .then((response) => {
             console.log("reponse de l'API :" + response);
           })

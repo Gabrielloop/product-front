@@ -5,24 +5,15 @@ const hostUrl = "http://localhost:8080";
 // Post methode to API
 export const postApiBack = async (url: string, data: any) => {
   const urlFinal = hostUrl + url;
-
-  const requestData = {
-    ordersUserEmail: data.mail,
-    ordersStatus: "Validation",
-    ordersTotal: data.total.toFixed(2),
-  };
-
-  console.log("data postApiBack", requestData);
+  console.log("data postApiBack", data);
 
   try {
-    const response = await axios.post(urlFinal, requestData, {
+    const response = await axios.post(urlFinal, data, {
       headers: {
         "Content-Type": "application/json",
-        //utiliser le local storage pour récupérer le token et le mettre en header.
       },
       withCredentials: true,
     });
-    console.log("response.data", response.data);
     return response.data;
   } catch (error: any) {
     if (error.response) {
