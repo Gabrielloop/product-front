@@ -7,6 +7,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Products from "pages/Products";
 import ProductDetails from "pages/ProductDetails";
 import Cart from "pages/Cart";
+import { Context } from "react-helmet-async/lib/Provider";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

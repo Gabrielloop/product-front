@@ -21,3 +21,13 @@ export interface CartProps {
 export interface CartSelectorProps {
   product: Product;
 }
+
+export interface Command {
+  ordersId: number;
+  ordersUserEmail: string;
+  ordersStatus: string;
+  ordersTotal: number;
+}
+
+//Ajouter l'interface pour les articles par commandes
+// export interface 

@@ -30,7 +30,6 @@ const ProductsFilters: React.FC = () => {
         response = await getApiBack("/product/categories");
         if (response) {
           setCategories(response);
-          console.log("categories", response);
         }
       } catch (error) {}
     });

@@ -57,7 +57,6 @@ const CartSelector: React.FC<CartSelectorProps> = ({ product }) => {
       setCart(updateCart);
       localStorage.setItem("cart", JSON.stringify(updateCart));
       cartObservable.next(updateCart);
-      console.log("Cart updated", updateCart);
     }
   };
 

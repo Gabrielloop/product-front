@@ -5,16 +5,34 @@ import CartList from "components/core/CartList";
 import EmptyCart from "layout/EmptyCart";
 import { postApiBack } from "../api/postApiBack";
 import { formatCurrency } from "services/formatCurrency";
+import CommandList from "components/core/CommandList";
+import { useContext } from "react";
+
 
 export const cartObservable: BehaviorSubject<CartProps[]> = new BehaviorSubject<
   CartProps[]
 >([]);
 
+
+
 const Cart: React.FC = () => {
+  const [localMail, setLocalMail] = useState<string>(localStorage.getItem("mailLocal") || "");
+  const [localCart, setLocalCart] = useState<CartProps[]>([]);
   const [productsInCart, setProductsInCart] = useState<CartProps[]>([]);
   const [cartSize, setCartSize] = useState<number>(0);
   const [cartTotal, setCartTotal] = useState<number>(0);
   const [mail, setMail] = useState<string>("");
+
+  // récupération du panier dans le local storage
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    console.log("récupération du panier", cart);
+    setLocalCart(cart);
+    cartObservable.next(cart);
+  }, []);
+
+
+
 
   // récupération du panier
   useEffect(() => {
@@ -31,11 +49,18 @@ const Cart: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+
   const handleMail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMail(e.target.value);
   };
 
-  const handleOrder = async () => {
+  const handleResetMail = () => {
+  setLocalMail("");
+  localStorage.removeItem("mailLocal");
+};
+
+  const handleOrder = async (event: React.FormEvent) => {
+    event.preventDefault();
     const products = productsInCart.map((product) => ({
       productId: product.product.productId,
       quantity: product.quantity,
@@ -50,19 +75,27 @@ const Cart: React.FC = () => {
       ordersTotal: totalCommand,
     };
 
-    postApiBack("/orders/add", {requestData})
+    postApiBack("/orders/add", requestData)
       .then((response) => {
-        console.log("reponse de l'API :" + response);
         // on ajoute les produits dans la base de données
         // on post les produits dans la base de données
+
         const requestProducts = products.map((product) => ({
           ordersId: response,
           productId: product.productId,
           quantity: product.quantity,
-        }));
-        postApiBack("/ordersProduct/add", {requestProducts})
+        }))
+        
+        postApiBack("/ordersProduct/add", requestProducts)
           .then((response) => {
-            console.log("reponse de l'API :" + response);
+            // on vide le panier
+            cartObservable.next([]);
+            // on enregistre le mail dans le local storage
+            localStorage.setItem("mailLocal", mail);
+            // on vide le panier
+            localStorage.removeItem("cart");
+            setLocalMail(mail);
+
           })
           .catch((error) => {
             console.error(
@@ -75,6 +108,8 @@ const Cart: React.FC = () => {
         console.error("Erreur lors de la récupération des données :", error);
       });
   };
+
+  {localMail ? console.log("localMail : ", localMail ) : console.log("localMail false : ", localMail )}
 
   return (
     <div>
@@ -107,8 +142,21 @@ const Cart: React.FC = () => {
         ))}
         <h3>Total: {formatCurrency(cartTotal)}</h3>
       </div>
-      <input onChange={handleMail} type="text" placeholder="votre mail" />
-      <button onClick={handleOrder}>commander</button>
+      
+      <button onClick={() => cartObservable.next([])}>Vider le panier</button>
+      <button onClick={handleResetMail}>Reset mail</button>
+      <form onSubmit={handleOrder}>
+      <input
+      disabled={localMail ? true : false}
+      onChange={handleMail}
+      type="email" placeholder="votre mail"
+      required
+      defaultValue={localMail || ""} />
+      <button type= "submit" >commander</button>
+      </form>
+
+        <CommandList mail={localMail} />
+
     </div>
   );
 };
