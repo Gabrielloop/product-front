@@ -4,6 +4,8 @@ import { Product } from "../@types/Types";
 import { useNavigate } from "react-router-dom";
 import { getApiBack } from "../api/getApiBack";
 import { useTransition } from "react";
+import DetailedProduct from "components/core/DetailedProduct";
+import { Helmet } from "react-helmet-async";
 
 const ProductDetails: React.FC = () => {
   const [productFromApi, setProductFromApi] = React.useState<Product>();
@@ -31,16 +33,15 @@ const ProductDetails: React.FC = () => {
 
   return (
     <div>
-      <h2>Product Details #</h2>
-      {/* Add your product details content here */}
+      <Helmet>
+        <title>{productFromApi?.productName}</title>
+      </Helmet>
+      <h2>{productFromApi?.productName}</h2>
+
       {isPending ? (
         <div>Loading...</div>
       ) : (
-        <div>
-          <h3>{productFromApi?.productName}</h3>
-          <p>{productFromApi?.productDescription}</p>
-          <p>{productFromApi?.productPrice}</p>
-        </div>
+        productFromApi && <DetailedProduct product={productFromApi} />
       )}
     </div>
   );

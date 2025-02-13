@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { startTransition } from "react";
 import { article$ } from "../../components/core/ProductsList";
 import * as Types from "../../@types/Types";
+import DetailedProduct from "./DetailedProduct";
 
 const QuickViewDetails: React.FC = () => {
   const [article, setArticle] = useState<Types.Product>({} as Types.Product);
@@ -22,9 +23,7 @@ const QuickViewDetails: React.FC = () => {
   return (
     <div>
       <h2>{article.productName}</h2>
-      <p>Article ID: {article.productId}</p>
-      <p>Article Price: {article.productPrice}</p>
-      <p>Article Stock: {article.productStock}</p>
+      <DetailedProduct product={article} />
     </div>
   );
 };

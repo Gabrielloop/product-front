@@ -59,6 +59,7 @@ const ProductsList: React.FC = () => {
       <table>
         <thead>
           <tr>
+            <td></td>
             <td>
               <b>Article</b>
             </td>

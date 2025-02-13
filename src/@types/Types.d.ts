@@ -2,10 +2,11 @@ export interface Product {
   productId: number;
   productName: string;
   productDescription: string;
-  productPrice: number;
+  productPrice: decimal;
   productStock: number;
   productDeleted: boolean;
   productCategory: String;
+  productImage: string | undefined;
 }
 
 export interface Filters {

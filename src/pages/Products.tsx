@@ -13,7 +13,6 @@ const Products: React.FC = () => {
           <ProductsList />
         </article>
         <article>
-          <h2>Products Details</h2>
           <QuickViewDetails />
         </article>
       </section>

@@ -64,9 +64,14 @@ const CartSelector: React.FC<CartSelectorProps> = ({ product }) => {
   return (
     <div>
       <input
-        className="add-to-cart"
+        className={
+          product.productStock <= 0
+            ? "selector-stock "
+            : "selector-stock stock-able"
+        }
         type="number"
         name="number"
+        disabled={product.productStock <= 0}
         min="0"
         max={product.productStock}
         defaultValue={

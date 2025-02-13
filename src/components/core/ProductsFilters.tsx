@@ -36,6 +36,23 @@ const ProductsFilters: React.FC = () => {
     });
   };
 
+  // switch sur category
+
+  const imgLink = (category: string) => {
+    switch (category) {
+      case "all":
+        return "https://via.placeholder.com/150";
+      case "ball":
+        return "https://www.pokepedia.fr/images/b/b1/Miniature_Pok%C3%A9_Ball_EV.png";
+      case "soin":
+        return "https://www.pokepedia.fr/images/c/ce/Miniature_Potion_EV.png";
+      case "baie":
+        return "https://www.pokepedia.fr/images/f/f5/Miniature_Baie_Oran_EV.png";
+      default:
+        return "https://via.placeholder.com/150";
+    }
+  };
+
   React.useEffect(() => {
     fetchData();
   }, []);
@@ -44,11 +61,23 @@ const ProductsFilters: React.FC = () => {
     <div className="filters">
       <div>
         <label>
-          <div onClick={() => handleCategoryClick("all")}>all</div>
+          <div onClick={() => handleCategoryClick("all")}>
+            tous les articles
+          </div>
         </label>
         {categories.map((category) => (
           <label key={category}>
-            <div onClick={() => handleCategoryClick(category)}>{category}</div>
+            <div
+              onClick={() => handleCategoryClick(category)}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={imgLink(category)}
+                style={{
+                  height: "20px",
+                }}
+              />
+            </div>
           </label>
         ))}
       </div>
