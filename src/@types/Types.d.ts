@@ -29,5 +29,12 @@ export interface Command {
   ordersTotal: number;
 }
 
-//Ajouter l'interface pour les articles par commandes
-// export interface 
+export interface CommandProduct {
+  ordersId: number;
+  productId: number;
+  quantite: number;
+}
+
+export interface CommandProductWithQuantity extends Product {
+  quantity: number;
+}

@@ -1,21 +1,18 @@
-import { Command } from '../../@types/Types';
-import { getApiBack } from '../../api/getApiBack';
-import React, { startTransition, use, useEffect, useState } from 'react';
-import CommandLine from './CommandLine';
+import { Command } from "../../@types/Types";
+import { getApiBack } from "../../api/getApiBack";
+import React, { startTransition, use, useEffect, useState } from "react";
+import CommandLine from "./CommandLine";
 
 interface CommandListProps {
-    mail: string;
+  mail: string;
 }
 
 const CommandList: React.FC<CommandListProps> = ({ mail }) => {
-    const [commandList, setCommandList] = useState<Command[]>([]);
+  const [commandList, setCommandList] = useState<Command[]>([]);
 
-useEffect(() => {
+  useEffect(() => {
     mail != "" && fetchData(mail);
-}
-, [mail]);
-
-
+  }, [mail]);
 
   const fetchData = async (mail: string) => {
     startTransition(async () => {
@@ -33,20 +30,22 @@ useEffect(() => {
     });
   };
 
+  return (
+    <div>
+      <h3>Historique de commandes : {mail}</h3>
 
-    return (
-        <div>
-            <h3>Historique de commandes : {mail}</h3>
+      <div className="command-list">
+        {(!commandList || commandList.length === 0) && (
+          <div>Aucune commande</div>
+        )}
 
-
-
-            <div className='command-list'>
-                {commandList.map((command:Command) => (
-                    <CommandLine key={command.ordersId} command={command} />
-                ))}
-            </div>
-        </div>
-    );
+        {commandList?.length > 0 &&
+          commandList.map((command: Command) => (
+            <CommandLine key={command.ordersId} command={command} />
+          ))}
+      </div>
+    </div>
+  );
 };
 
 export default CommandList;
