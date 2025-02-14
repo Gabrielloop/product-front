@@ -31,10 +31,14 @@ const ProductDetails: React.FC = () => {
 
   console.log("product id:", productFromApi);
 
+  const title = productFromApi?.productName
+    ? `Pokémart : ${productFromApi.productName}`
+    : "Pokémart";
+
   return (
     <div>
       <Helmet>
-        <title>{productFromApi?.productName}</title>
+        <title>{title}</title>
       </Helmet>
       <h2>{productFromApi?.productName}</h2>
 

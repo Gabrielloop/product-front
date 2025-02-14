@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { CartProps } from "../@types/Types";
+import { CartProps, Command } from "../@types/Types";
 import CartList from "components/core/CartList";
 import EmptyCart from "layout/EmptyCart";
 import { postApiBack } from "../api/postApiBack";
 import { formatCurrency } from "services/formatCurrency";
-import CommandList from "components/core/CommandList";
 import { useContext } from "react";
-
+import { AuthContext } from "auth/AuthContext";
+import FormLogin from "components/core/FormLogin";
+import { Helmet } from "react-helmet-async";
 
 export const cartObservable: BehaviorSubject<CartProps[]> = new BehaviorSubject<
   CartProps[]
 >([]);
 
-
-
 const Cart: React.FC = () => {
-  const [localMail, setLocalMail] = useState<string>(localStorage.getItem("mailLocal") || "");
+  const [localMail, setLocalMail] = useState<string>(
+    localStorage.getItem("mailLocal") || ""
+  );
   const [localCart, setLocalCart] = useState<CartProps[]>([]);
   const [productsInCart, setProductsInCart] = useState<CartProps[]>([]);
   const [cartSize, setCartSize] = useState<number>(0);
   const [cartTotal, setCartTotal] = useState<number>(0);
-  const [mail, setMail] = useState<string>("");
+  const authContext = useContext(AuthContext);
+  const isLoggedIn = authContext?.isLoggedIn;
+  const loginUserRole = authContext?.loginUserRole;
+  const loginUserEmail = authContext?.loginUserEmail;
+  const [lastCommand, setLastCommand] = useState<Command>();
 
   // récupération du panier dans le local storage
   useEffect(() => {
@@ -30,9 +35,6 @@ const Cart: React.FC = () => {
     setLocalCart(cart);
     cartObservable.next(cart);
   }, []);
-
-
-
 
   // récupération du panier
   useEffect(() => {
@@ -49,16 +51,6 @@ const Cart: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-
-  const handleMail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMail(e.target.value);
-  };
-
-  const handleResetMail = () => {
-  setLocalMail("");
-  localStorage.removeItem("mailLocal");
-};
-
   const handleOrder = async (event: React.FormEvent) => {
     event.preventDefault();
     const products = productsInCart.map((product) => ({
@@ -67,10 +59,13 @@ const Cart: React.FC = () => {
       total: (product.quantity * product.product.productPrice).toFixed(2),
     }));
 
-    const totalCommand = products.reduce((acc, item) => acc + parseFloat(item.total), 0);
+    const totalCommand = products.reduce(
+      (acc, item) => acc + parseFloat(item.total),
+      0
+    );
 
     const requestData = {
-      ordersUserEmail: mail,
+      ordersUserEmail: loginUserEmail,
       ordersStatus: "Validation",
       ordersTotal: totalCommand,
     };
@@ -84,18 +79,16 @@ const Cart: React.FC = () => {
           ordersId: response,
           productId: product.productId,
           quantity: product.quantity,
-        }))
-        
+        }));
+
         postApiBack("/ordersProduct/add", requestProducts)
           .then((response) => {
             // on vide le panier
+
             cartObservable.next([]);
-            // on enregistre le mail dans le local storage
-            localStorage.setItem("mailLocal", mail);
+
             // on vide le panier
             localStorage.removeItem("cart");
-            setLocalMail(mail);
-
           })
           .catch((error) => {
             console.error(
@@ -103,61 +96,89 @@ const Cart: React.FC = () => {
               error
             );
           });
+        // mise à jour de la dernière commande
+        setLastCommand({
+          ordersId: response,
+          ordersUserEmail: loginUserEmail || "",
+          ordersStatus: "Validation",
+          ordersTotal: totalCommand,
+        });
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
       });
   };
 
-  {localMail ? console.log("localMail : ", localMail ) : console.log("localMail false : ", localMail )}
+  // on affiche le resultat de la commande à l'utilisateur
+  useEffect(() => {
+    if (lastCommand) {
+      alert(
+        `Votre commande a été enregistrée sous le numéro ${
+          lastCommand.ordersId
+        } pour un montant de ${formatCurrency(lastCommand.ordersTotal)}`
+      );
+    }
+  }, [lastCommand]);
 
   return (
-    <div>
-      <div id="cart-list">
-        <h2>Panier</h2>
+    <>
+      <Helmet>
+        <title>Pokémart : Panier</title>
+      </Helmet>
+      <div>
+        <div id="cart-list">
+          <h2>Panier</h2>
 
-        {cartSize === 1 && <span>{cartSize} Article</span>}
-        {cartSize > 1 && <span>{cartSize} Articles</span>}
+          {cartSize === 1 && <span>{cartSize} Article</span>}
+          {cartSize > 1 && <span>{cartSize} Articles</span>}
 
-        {cartSize === 0 && <EmptyCart />}
+          {cartSize === 0 && <EmptyCart />}
 
-        <div className="cart-item cart-header">
-          <div></div>
-          <div>
-            <b>Article</b>
+          <div className="cart-item cart-header">
+            <div></div>
+            <div>
+              <b>Article</b>
+            </div>
+            <div>
+              <b>Prix</b>
+            </div>
+            <div>
+              <b>Total</b>
+            </div>
+            <div>
+              <b>Quantité</b>
+            </div>
           </div>
-          <div>
-            <b>Prix</b>
-          </div>
-          <div>
-            <b>Total</b>
-          </div>
-          <div>
-            <b>Quantité</b>
-          </div>
+
+          {productsInCart.map((product) => (
+            <CartList key={product.product.productId} {...product} />
+          ))}
+          <h3>Total: {formatCurrency(cartTotal)}</h3>
         </div>
 
-        {productsInCart.map((product) => (
-          <CartList key={product.product.productId} {...product} />
-        ))}
-        <h3>Total: {formatCurrency(cartTotal)}</h3>
+        <button onClick={() => cartObservable.next([])}>Vider le panier</button>
+
+        {isLoggedIn ? (
+          <form onSubmit={handleOrder}>
+            <button type="submit">commander</button>
+            <br />
+            Mail : {loginUserEmail}
+          </form>
+        ) : (
+          <FormLogin />
+        )}
+
+        {lastCommand && (
+          <div id="last-command">
+            <h2>Dernière commande en attente de validation</h2>
+            <p>
+              Commande n° {lastCommand.ordersId} pour un montant de{" "}
+              {formatCurrency(lastCommand.ordersTotal)}
+            </p>
+          </div>
+        )}
       </div>
-      
-      <button onClick={() => cartObservable.next([])}>Vider le panier</button>
-      <button onClick={handleResetMail}>Reset mail</button>
-      <form onSubmit={handleOrder}>
-      <input
-      disabled={localMail ? true : false}
-      onChange={handleMail}
-      type="email" placeholder="votre mail"
-      required
-      defaultValue={localMail || ""} />
-      <button type= "submit" >commander</button>
-      </form>
-
-        <CommandList mail={localMail} />
-
-    </div>
+    </>
   );
 };
 export default Cart;

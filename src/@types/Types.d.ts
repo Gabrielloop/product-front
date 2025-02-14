@@ -5,7 +5,7 @@ export interface Product {
   productPrice: decimal;
   productStock: number;
   productDeleted: boolean;
-  productCategory: String;
+  productCategory: string;
   productImage: string | undefined;
 }
 
@@ -37,4 +37,9 @@ export interface CommandProduct {
 
 export interface CommandProductWithQuantity extends Product {
   quantity: number;
+}
+export interface LoginFormInput {
+  [x: string]: any;
+  userEmail: string;
+  userPassword: string;
 }

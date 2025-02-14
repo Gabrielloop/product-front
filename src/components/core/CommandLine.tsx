@@ -4,14 +4,16 @@ import {
   CommandProduct,
   CommandProductWithQuantity,
 } from "../../@types/Types";
-import React, { startTransition, useEffect, useState } from "react";
+import React, { startTransition, use, useEffect, useState } from "react";
 import { getApiBack } from "../../api/getApiBack";
+import { useNavigate } from "react-router-dom";
 
 interface CommandLineProps {
   command: Command;
 }
 
 const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
+  const navigate = useNavigate();
   const [productList, setProductList] = useState<CommandProductWithQuantity[]>(
     []
   );
@@ -43,18 +45,27 @@ const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
         <div>Statut : {command.ordersStatus}</div>
         <div>Total : {formatCurrency(command.ordersTotal)}</div>
       </div>
-      <div>
+      <div className="product-list-row">
         {(!productList || productList.length === 0) && (
           <div>Aucune commande</div>
         )}
 
         {productList?.length > 0 &&
           productList.map((product: CommandProductWithQuantity) => (
-            <div key={product.productId}>
-              <div>Produit #{product.productId}</div>
-              <div>x {product.quantity}</div>
+            <div
+              key={product.productId}
+              className="product-thumbnail"
+              onClick={() => navigate(`/product/${product.productId}`)}
+            >
+              <div>
+                <img
+                  src={product.productImage}
+                  alt={product.productName}
+                  className="product-thumbnail-image"
+                />
+              </div>
+              {/* <div>x {product.quantity}</div>  Erreur */}
               <div>{product.productName}</div>
-              <div>{formatCurrency(product.productPrice)}</div>
             </div>
           ))}
       </div>
