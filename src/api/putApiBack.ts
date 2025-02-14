@@ -2,10 +2,12 @@ import axios from "axios";
 
 const hostUrl = "http://localhost:8080";
 
-// PUT methode to API
+// Idem que dans authApiBack.ts, ici on utilise la méthode PUT
+
+// J'ai ajouter des console.log pour récupérer les données envoyées à l'API
+
 export const putApiBack = async (url: string, data: any) => {
   const urlFinal = hostUrl + url;
-  console.log("data putApiBack", data);
 
   try {
     const response = await axios.put(urlFinal, data, {
@@ -13,8 +15,7 @@ export const putApiBack = async (url: string, data: any) => {
       withCredentials: true,
     });
 
-    console.log("Réponse complète API :", response); // 🔥 DEBUG
-
+    // Controle ici du status renvoyé par l'API : utilsé lors du développement
     if (response.status < 200 || response.status >= 300) {
       console.error("Réponse API en erreur :", response.data);
       throw new Error(
@@ -22,7 +23,6 @@ export const putApiBack = async (url: string, data: any) => {
       );
     }
 
-    console.log("Produit mis à jour avec succès :", response.data);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -33,6 +33,6 @@ export const putApiBack = async (url: string, data: any) => {
     } else {
       console.error("Erreur de configuration :", error.message);
     }
-    throw error; // Relance l'erreur pour voir où elle est capturée
+    throw error;
   }
 };

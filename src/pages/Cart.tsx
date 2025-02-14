@@ -2,23 +2,21 @@ import React, { useEffect, useState } from "react";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { CartProps, Command } from "../@types/Types";
 import CartList from "components/core/CartList";
-import EmptyCart from "layout/EmptyCart";
 import { postApiBack } from "../api/postApiBack";
 import { formatCurrency } from "services/formatCurrency";
 import { useContext } from "react";
 import { AuthContext } from "auth/AuthContext";
-import FormLogin from "components/core/FormLogin";
 import { Helmet } from "react-helmet-async";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+// Composant pour afficher la page du panier
+
+// Déclaration de l'observable pour le panier
 export const cartObservable: BehaviorSubject<CartProps[]> = new BehaviorSubject<
   CartProps[]
 >([]);
 
 const Cart: React.FC = () => {
-  const [localMail, setLocalMail] = useState<string>(
-    localStorage.getItem("mailLocal") || ""
-  );
   const [localCart, setLocalCart] = useState<CartProps[]>([]);
   const [productsInCart, setProductsInCart] = useState<CartProps[]>([]);
   const [cartSize, setCartSize] = useState<number>(0);

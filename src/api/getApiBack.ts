@@ -2,7 +2,8 @@ import axios from "axios";
 
 const hostUrl = "http://localhost:8080";
 
-// GET methode to API
+// Idem que dans authApiBack.ts, mais ici on utilise la méthode GET
+
 export const getApiBack = (url: string) => {
   const urlFinal = hostUrl + url;
 

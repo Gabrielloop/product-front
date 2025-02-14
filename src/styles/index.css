@@ -660,7 +660,7 @@ button:hover {
   }
   .cart-options {
     display: flex;
-    flex-direction: row;
+    flex-direction: column-reverse;
     justify-content: space-between;
     align-items: center;
     align-self: flex-end;
@@ -668,7 +668,7 @@ button:hover {
     padding: 1rem;
     border: var(--bg-contrast) 1px solid;
     border-radius: 10px;
-    height: 40px;
+    height: auto;
   }
 }
 @media (max-width: 480px) {
@@ -711,5 +711,17 @@ button:hover {
     border: var(--bg-contrast) 1px solid;
     border-radius: 10px;
     height: auto;
+  }
+  .form-login-register > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .form-login-register > form > input {
+    width: 100%;
+  }
+  .form-login-register > form > button {
+    width: 100%;
   }
 }

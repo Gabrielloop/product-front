@@ -2,10 +2,10 @@ import axios from "axios";
 
 const hostUrl = "http://localhost:8080";
 
-// Post methode to API
+// Idem que dans authApiBack.ts, sauf que je reserve l'authApiBack pour l'authentification
+
 export const postApiBack = async (url: string, data: any) => {
   const urlFinal = hostUrl + url;
-  console.log("data postApiBack", data);
 
   try {
     const response = await axios.post(urlFinal, data, {
