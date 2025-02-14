@@ -43,3 +43,6 @@ export interface LoginFormInput {
   userEmail: string;
   userPassword: string;
 }
+export interface CommandLineProps {
+  command: Command;
+}

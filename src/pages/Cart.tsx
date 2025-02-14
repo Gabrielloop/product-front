@@ -56,42 +56,40 @@ const Cart: React.FC = () => {
     }
   };
 
+  // handler pour passer la commande
   const handleOrder = async (event: React.FormEvent) => {
+    // on empêche le rechargement de la page
     event.preventDefault();
+    // on transforme les produits du panier en produits de commande
     const products = productsInCart.map((product) => ({
       productId: product.product.productId,
       quantity: product.quantity,
       total: (product.quantity * product.product.productPrice).toFixed(2),
     }));
-
+    // on calcule le total de la commande
     const totalCommand = products.reduce(
       (acc, item) => acc + parseFloat(item.total),
       0
     );
-
+    // on transforme les produits du panier en commande
     const requestData = {
       ordersUserEmail: loginUserEmail,
       ordersStatus: "Validation",
       ordersTotal: totalCommand,
     };
-
+    // on post la commande dans la base de données
     postApiBack("/orders/add", requestData)
       .then((response) => {
-        // on ajoute les produits dans la base de données
-        // on post les produits dans la base de données
-
+        // on post les produits de la commande dans la base de données
         const requestProducts = products.map((product) => ({
           ordersId: response,
           productId: product.productId,
           quantity: product.quantity,
         }));
-
         postApiBack("/ordersProduct/add", requestProducts)
           .then((response) => {
             // on vide le panier
-
             cartObservable.next([]);
-
             // on vide le panier
             localStorage.removeItem("cart");
           })
@@ -101,7 +99,7 @@ const Cart: React.FC = () => {
               error
             );
           });
-        // mise à jour de la dernière commande
+        // mise à jour de la dernière commande pour le message à l'utilisateur
         setLastCommand({
           ordersId: response,
           ordersUserEmail: loginUserEmail || "",
@@ -172,9 +170,9 @@ const Cart: React.FC = () => {
                 <button type="submit">commander ({loginUserEmail})</button>
               </form>
             ) : (
-              <span style={{ cursor: "pointer" }} onClick={handleDashboard}>
+              <button style={{ cursor: "pointer" }} onClick={handleDashboard}>
                 Se connecter pour passer la commande
-              </span>
+              </button>
             )}
             <h3>Total: {formatCurrency(cartTotal)}</h3>
           </div>

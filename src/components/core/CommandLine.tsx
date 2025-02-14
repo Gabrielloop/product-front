@@ -1,16 +1,14 @@
 import { formatCurrency } from "services/formatCurrency";
 import {
-  Command,
-  CommandProduct,
   CommandProductWithQuantity,
+  CommandLineProps,
 } from "../../@types/Types";
 import React, { startTransition, use, useEffect, useState } from "react";
 import { getApiBack } from "../../api/getApiBack";
 import { useNavigate } from "react-router-dom";
 
-interface CommandLineProps {
-  command: Command;
-}
+// Composant pour afficher une ligne de commande
+// il y a un problème avec la récupération de la quantité des produits
 
 const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
   const navigate = useNavigate();
@@ -20,13 +18,15 @@ const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
 
   const commandId = command.ordersId;
 
+  // récupération des produits de la commande
   const fetchProducts = async (commandId: Number) => {
     startTransition(async () => {
       try {
         let response;
+        // j'utilise mon API pour récupérer les produits de la commande
         const url = `/ordersProduct/orders/${commandId}`;
         response = await getApiBack(url);
-
+        // j'enregistre les produits dans le state
         setProductList(response);
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error);
@@ -34,6 +34,7 @@ const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
     });
   };
 
+  // je récupère les produits de la commande à chaque changement de commande
   useEffect(() => {
     fetchProducts(commandId);
   }, [commandId]);
@@ -64,7 +65,7 @@ const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
                   className="product-thumbnail-image"
                 />
               </div>
-              {/* <div>x {product.quantity}</div>  Erreur */}
+              {/* <div>x {product.quantity}</div>  Je n'arrive pas à récupérer la valeur*/}
               <div>{product.productName}</div>
             </div>
           ))}

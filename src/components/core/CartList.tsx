@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import CartSelector from "./CartSelector";
 import { formatCurrency } from "services/formatCurrency";
 
+// composant pour afficher un produit dans le panier (liste du panier)
+
 const CartList: React.FC<CartProps> = ({ product, quantity }) => {
   const navigate = useNavigate();
 

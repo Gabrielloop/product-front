@@ -3,6 +3,8 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { CartProps, Product, CartSelectorProps } from "../../@types/Types";
 import { cartObservable } from "../../pages/Cart";
 
+// Composant pour afficher le sélecteur de quantité dans le panier et dans la liste de produits
+
 // L'observable du panier est importé depuis la page Cart
 
 const CartSelector: React.FC<CartSelectorProps> = ({ product }) => {
@@ -11,6 +13,7 @@ const CartSelector: React.FC<CartSelectorProps> = ({ product }) => {
     return JSON.parse(localStorage.getItem("cart") || "[]");
   });
 
+  // on utilise un useEffect pour s'abonner à l'observable du panier
   useEffect(() => {
     const subscription: Subscription = cartObservable.subscribe((newCart) => {
       setCart(newCart);
@@ -23,6 +26,7 @@ const CartSelector: React.FC<CartSelectorProps> = ({ product }) => {
     };
   }, []);
 
+  // handler pour modifier la quantité d'un produit dans le panier
   const handleModifyCart = (e: React.ChangeEvent<HTMLInputElement>) => {
     let quantity = parseInt(e.target.value);
 
