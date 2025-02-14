@@ -29,6 +29,10 @@ const ProductDetails: React.FC = () => {
     fetchData();
   }, []);
 
+  const handleReturn = () => {
+    navigate("/products");
+  };
+
   console.log("product id:", productFromApi);
 
   const title = productFromApi?.productName
@@ -36,10 +40,17 @@ const ProductDetails: React.FC = () => {
     : "Pokémart";
 
   return (
-    <div>
+    <div id="products-detailed-page">
       <Helmet>
         <title>{title}</title>
       </Helmet>
+      <span
+        onClick={handleReturn}
+        style={{ cursor: "pointer" }}
+        className="nav-link"
+      >
+        Retour à la liste de produits
+      </span>
       <h2>{productFromApi?.productName}</h2>
 
       {isPending ? (

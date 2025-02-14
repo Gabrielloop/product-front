@@ -39,7 +39,7 @@ const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
   }, [commandId]);
 
   return (
-    <>
+    <div className="command-block-line">
       <div className="command-line">
         <div>Commande n°{command.ordersId}</div>
         <div>Statut : {command.ordersStatus}</div>
@@ -69,7 +69,7 @@ const CommandLine: React.FC<CommandLineProps> = ({ command }) => {
             </div>
           ))}
       </div>
-    </>
+    </div>
   );
 };
 

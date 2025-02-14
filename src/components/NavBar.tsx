@@ -8,10 +8,7 @@ import { AuthContext } from "auth/AuthContext";
 import { formatCurrency } from "services/formatCurrency";
 
 const NavBar: React.FC = () => {
-  const links = [
-    { href: "/about", text: "About" },
-    { href: "/products", text: "Nos produits" },
-  ];
+  const links = [{ href: "/products", text: "Nos produits" }];
 
   const navigate = useNavigate();
   const [cart, setCart] = useState<CartProps[]>([]);

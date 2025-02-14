@@ -37,65 +37,79 @@ const ProductAddForm: React.FC = () => {
   };
 
   return (
-    <section>
-      <h2>Ajouter un produit</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="product-form">
+      <h3>Ajouter un produit</h3>
       {message && <p className="message">{message}</p>}
-      <form onSubmit={handleSubmit(onSubmit)} className="product-form">
-        <label>Nom du produit</label>
-        <input
-          type="text"
-          {...register("productName", {
-            required: "Le nom du produit est requis",
-          })}
-        />
-        {errors.productName && (
-          <p className="error">{errors.productName.message}</p>
-        )}
+      <label>Nom du produit</label>
+      <input
+        className="input-standart"
+        type="text"
+        {...register("productName", {
+          required: "Le nom du produit est requis",
+        })}
+      />
+      {errors.productName && (
+        <p className="error">{errors.productName.message}</p>
+      )}
 
-        <label>Description</label>
-        <input
-          type="text"
-          {...register("productDescription", {
-            required: "La description est requise",
-          })}
-        />
-        {errors.productDescription && (
-          <p className="error">{errors.productDescription.message}</p>
-        )}
+      <label>Description</label>
+      <input
+        className="input-standart"
+        type="text"
+        {...register("productDescription", {
+          required: "La description est requise",
+        })}
+      />
+      {errors.productDescription && (
+        <p className="error">{errors.productDescription.message}</p>
+      )}
 
-        <label>Prix</label>
-        <input
-          type="number"
-          step="0.01"
-          {...register("productPrice", { required: "Le prix est requis" })}
-        />
-        {errors.productPrice?.message && (
-          <p className="error">{String(errors.productPrice.message)}</p>
-        )}
+      <label>Prix</label>
+      <input
+        className="input-standart"
+        type="number"
+        step="0.01"
+        {...register("productPrice", { required: "Le prix est requis" })}
+      />
+      {errors.productPrice?.message && (
+        <p className="error">{String(errors.productPrice.message)}</p>
+      )}
 
-        <label>Stock</label>
-        <input
-          type="number"
-          {...register("productStock", { required: "Le stock est requis" })}
-        />
-        {errors.productStock && (
-          <p className="error">{errors.productStock.message}</p>
-        )}
+      <label>Stock</label>
+      <input
+        className="input-standart"
+        type="number"
+        {...register("productStock", { required: "Le stock est requis" })}
+      />
+      {errors.productStock && (
+        <p className="error">{errors.productStock.message}</p>
+      )}
 
-        <label>Statut</label>
-        <select {...register("productDeleted")}>
-          <option value="true">Indisponible</option>
-        </select>
+      <label>Statut</label>
+      <select
+        {...register("productDeleted")}
+        className="input-standart"
+        style={{ height: "40px" }}
+      >
+        <option value="true">Indisponible</option>
+      </select>
 
-        <label>Catégorie</label>
-        <input type="text" {...register("productCategory")} />
+      <label>Catégorie</label>
+      <input
+        className="input-standart"
+        type="text"
+        {...register("productCategory")}
+      />
 
-        <label>URL de l'image</label>
-        <input type="text" {...register("productImage")} />
+      <label>URL de l'image</label>
+      <input
+        className="input-standart"
+        type="text"
+        {...register("productImage")}
+      />
 
-        <button type="submit">Ajouter le produit</button>
-      </form>
-    </section>
+      <button type="submit">Ajouter le produit</button>
+    </form>
   );
 };
 

@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { AuthContext } from "auth/AuthContext";
 import FormLogin from "components/core/FormLogin";
 import { Helmet } from "react-helmet-async";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const cartObservable: BehaviorSubject<CartProps[]> = new BehaviorSubject<
   CartProps[]
@@ -27,6 +28,7 @@ const Cart: React.FC = () => {
   const loginUserRole = authContext?.loginUserRole;
   const loginUserEmail = authContext?.loginUserEmail;
   const [lastCommand, setLastCommand] = useState<Command>();
+  const navigate = useNavigate();
 
   // récupération du panier dans le local storage
   useEffect(() => {
@@ -50,6 +52,11 @@ const Cart: React.FC = () => {
     });
     return () => subscription.unsubscribe();
   }, []);
+  const handleDashboard = () => {
+    if (navigate) {
+      navigate("/dashboard");
+    }
+  };
 
   const handleOrder = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -111,11 +118,11 @@ const Cart: React.FC = () => {
 
   // on affiche le resultat de la commande à l'utilisateur
   useEffect(() => {
-    if (lastCommand) {
+    if ((lastCommand?.ordersTotal ?? 0) > 0) {
       alert(
         `Votre commande a été enregistrée sous le numéro ${
-          lastCommand.ordersId
-        } pour un montant de ${formatCurrency(lastCommand.ordersTotal)}`
+          lastCommand?.ordersId
+        } pour un montant de ${formatCurrency(lastCommand?.ordersTotal ?? 0)}`
       );
     }
   }, [lastCommand]);
@@ -126,14 +133,17 @@ const Cart: React.FC = () => {
         <title>Pokémart : Panier</title>
       </Helmet>
       <div>
-        <div id="cart-list">
-          <h2>Panier</h2>
-
-          {cartSize === 1 && <span>{cartSize} Article</span>}
-          {cartSize > 1 && <span>{cartSize} Articles</span>}
-
-          {cartSize === 0 && <EmptyCart />}
-
+        <div id="cart">
+          {cartSize > 0 && (
+            <p>
+              <h2>Panier</h2>({cartSize}) Article
+            </p>
+          )}
+          {cartSize === 0 && (
+            <p>
+              <h2>Panier vide</h2>
+            </p>
+          )}
           <div className="cart-item cart-header">
             <div></div>
             <div>
@@ -153,30 +163,24 @@ const Cart: React.FC = () => {
           {productsInCart.map((product) => (
             <CartList key={product.product.productId} {...product} />
           ))}
-          <h3>Total: {formatCurrency(cartTotal)}</h3>
-        </div>
 
-        <button onClick={() => cartObservable.next([])}>Vider le panier</button>
+          <div className="cart-options">
+            <button onClick={() => cartObservable.next([])}>
+              Vider le panier
+            </button>
 
-        {isLoggedIn ? (
-          <form onSubmit={handleOrder}>
-            <button type="submit">commander</button>
-            <br />
-            Mail : {loginUserEmail}
-          </form>
-        ) : (
-          <FormLogin />
-        )}
-
-        {lastCommand && (
-          <div id="last-command">
-            <h2>Dernière commande en attente de validation</h2>
-            <p>
-              Commande n° {lastCommand.ordersId} pour un montant de{" "}
-              {formatCurrency(lastCommand.ordersTotal)}
-            </p>
+            {isLoggedIn ? (
+              <form onSubmit={handleOrder}>
+                <button type="submit">commander ({loginUserEmail})</button>
+              </form>
+            ) : (
+              <span style={{ cursor: "pointer" }} onClick={handleDashboard}>
+                Se connecter pour passer la commande
+              </span>
+            )}
+            <h3>Total: {formatCurrency(cartTotal)}</h3>
           </div>
-        )}
+        </div>
       </div>
     </>
   );

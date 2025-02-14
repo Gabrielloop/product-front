@@ -32,7 +32,7 @@ const CommandList: React.FC<CommandListProps> = ({ mail }) => {
 
   return (
     <div>
-      <h3>Historique de commandes : {mail}</h3>
+      <h3>Historique de commandes</h3>
 
       <div className="command-list">
         {(!commandList || commandList.length === 0) && (

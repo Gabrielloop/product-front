@@ -11,7 +11,7 @@ const ProductUpdateList: React.FC<ProductUpdateListProps> = ({
   productList,
 }) => {
   return (
-    <article>
+    <div>
       <h3>Liste des produits</h3>
       <div className="product-list">
         {productList.map((productLine: Product) => (
@@ -21,7 +21,7 @@ const ProductUpdateList: React.FC<ProductUpdateListProps> = ({
           />
         ))}
       </div>
-    </article>
+    </div>
   );
 };
 
@@ -59,8 +59,8 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
   };
 
   return (
-    <div className="product-list-admin">
-      <form onSubmit={handleSubmit(onUpdate)}>
+    <div>
+      <form onSubmit={handleSubmit(onUpdate)} className="product-form-list">
         <img
           src={product.productImage}
           alt={product.productName}
@@ -72,6 +72,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
         </label>
         <input type="hidden" {...register("productId")} />
         <input
+          className="input-transparent"
           type="text"
           id={`productName-${product.productId}`}
           {...register("productName")}
@@ -81,6 +82,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
           Description du produit
         </label>
         <input
+          className="input-transparent"
           type="text"
           id={`productDescription-${product.productId}`}
           {...register("productDescription")}
@@ -90,6 +92,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
           Prix du produit
         </label>
         <input
+          className="input-transparent"
           type="number"
           id={`productPrice-${product.productId}`}
           {...register("productPrice")}
@@ -99,6 +102,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
           Stock du produit
         </label>
         <input
+          className="input-transparent"
           type="number"
           id={`productStock-${product.productId}`}
           {...register("productStock")}
@@ -108,6 +112,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
           Statut du produit
         </label>
         <select
+          className="input-transparent"
           id={`productDeleted-${product.productId}`}
           {...register("productDeleted")}
         >
@@ -119,6 +124,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
           Catégorie du produit
         </label>
         <input
+          className="input-transparent"
           type="text"
           id={`productCategory-${product.productId}`}
           {...register("productCategory")}
@@ -128,6 +134,7 @@ const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({ product }) => {
           URL de l'image
         </label>
         <input
+          className="input-transparent"
           type="text"
           id={`productImage-${product.productId}`}
           {...register("productImage")}

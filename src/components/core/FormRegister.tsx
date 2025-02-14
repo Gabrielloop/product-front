@@ -51,15 +51,16 @@ const FormRegister: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Insription</h2>
+    <div className="form-login-register">
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
+          className="input-standart"
           type="email"
           placeholder="Email"
           {...register("userEmail", { required: "Email requis" })}
         />
         <input
+          className="input-standart"
           type="password"
           placeholder="Mot de passe"
           {...register("userPassword", {

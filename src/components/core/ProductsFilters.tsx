@@ -58,7 +58,7 @@ const ProductsFilters: React.FC = () => {
 
   return (
     <div className="filters">
-      <div>
+      <div className="filters-categories">
         <label>
           <div onClick={() => handleCategoryClick("all")}>
             tous les articles
@@ -80,14 +80,14 @@ const ProductsFilters: React.FC = () => {
           </label>
         ))}
       </div>
-      <div>
+      <div className="filters-name">
         <label>
-          Recherche:
           <input
             type="text"
             name="productName"
             value={filters.productName || ""}
             onChange={handleInputChange}
+            placeholder="Recherche..."
           />
         </label>
       </div>

@@ -13,7 +13,6 @@ const Products: React.FC = () => {
       <ProductsFilters />
       <section id="products">
         <article>
-          <h2>Products</h2>
           <ProductsList />
         </article>
         <article>

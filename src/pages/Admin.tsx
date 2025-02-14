@@ -76,18 +76,24 @@ const Admin: React.FC = () => {
   };
 
   return (
-    <section className="admin">
-      <h2>Administration</h2>
+    <>
+      <div className="dashboard-nav">
+        <div className="dashboard-nav-option">
+          <span></span>
+          <select onChange={handleMailChange}>
+            <option value="">Filtrer les commandes</option>
+            {mailList.map((mail) => (
+              <option key={mail} value={mail}>
+                {mail}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="dashboard-nav-option">
+          <button onClick={fetchProducts}>Charger les produits</button>
+        </div>
+      </div>
       <article>
-        <h3>Liste des commandes</h3>
-        <select onChange={handleMailChange}>
-          <option value="">Choisir un mail</option>
-          {mailList.map((mail) => (
-            <option key={mail} value={mail}>
-              {mail}
-            </option>
-          ))}
-        </select>
         <div className="command-list">
           {commandList.map((command: Command) => (
             <CommandLine key={command.ordersId} command={command} />
@@ -95,12 +101,12 @@ const Admin: React.FC = () => {
         </div>
       </article>
       <article>
-        <h3>Liste des produits</h3>
         <ProductAddForm />
-        <button onClick={fetchProducts}>Charger les produits</button>
+      </article>
+      <article>
         <ProductUpdateList productList={productList} />
       </article>
-    </section>
+    </>
   );
 };
 

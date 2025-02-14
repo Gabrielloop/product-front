@@ -39,7 +39,7 @@ const ProductsList: React.FC = () => {
             `/product/filter/${category}/${productName}`
           );
         } else {
-          response = await getApiBack("/product/all");
+          response = await getApiBack("/product/allAble");
         }
         setListFromApi(response);
       } catch (error) {
@@ -51,24 +51,26 @@ const ProductsList: React.FC = () => {
   return isPending ? (
     <div>Loading...</div>
   ) : (
-    <div>
-      {filters.productName && <h2>Recherche: {filters.productName}</h2>}
+    <div id="products-list">
+      <h2>Nos produits</h2>
+      {filters.productName && <h3>Recherche: {filters.productName}</h3>}
       {filters.category && filters.category != "all" && (
-        <h2>Catégorie: {filters.category}</h2>
+        <h3>Catégorie: {filters.category}</h3>
       )}
-      <table>
+
+      <table className="products-table">
         <thead>
           <tr>
-            <td></td>
-            <td>
+            <th></th>
+            <th>
               <b>Article</b>
-            </td>
-            <td>
+            </th>
+            <th>
               <b>Prix</b>
-            </td>
-            <td>
+            </th>
+            <th>
               <b>Panier</b>
-            </td>
+            </th>
           </tr>
         </thead>
         <tbody>

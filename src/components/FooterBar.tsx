@@ -5,7 +5,7 @@ const FooterBar: React.FC = () => {
   const navigate = useNavigate();
   return (
     <footer>
-      <p>© 2023 Your Company. All rights reserved.</p>
+      <p>Projet back + front du 11/02 au 14/02</p>
     </footer>
   );
 };

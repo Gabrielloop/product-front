@@ -21,7 +21,7 @@ const QuickViewDetails: React.FC = () => {
     return <div>Passez la souris sur un produit pour voir les détails.</div>;
 
   return (
-    <div>
+    <div id="quickview-details">
       <h2>{article.productName}</h2>
       <DetailedProduct product={article} />
     </div>

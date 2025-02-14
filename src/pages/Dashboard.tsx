@@ -31,37 +31,49 @@ const Dashboard: React.FC = () => {
       <Helmet>
         <title>Pokémart : Mon Compte</title>
       </Helmet>
-      <div>
-        <h2>Dashboard</h2>
+      <div id="dashboard">
         {isLoggedIn ? (
           loginUserRole === "ADMIN" ? (
             <>
-              <div>
-                <h3>
-                  Vous êtes connecté en tant qu'administrateur ({loginUserRole})
-                </h3>
+              <section>
+                <article>
+                  <h2>Mon compte</h2>
+                  <p>
+                    {loginUserEmail} ({loginUserRole})
+                  </p>
+                </article>
                 <button onClick={handleLogout}>Se déconnecter</button>
-              </div>
-              <Admin />
+              </section>
+              <section className="dashboard-content">
+                <Admin />
+              </section>
             </>
           ) : (
             <>
-              <div>
-                <h3>Vous êtes connecté ({loginUserRole})</h3>
+              <section>
+                <article>
+                  <h2>Mon compte</h2>
+                  <p>
+                    {loginUserEmail} ({loginUserRole})
+                  </p>
+                </article>
                 <button onClick={handleLogout}>Se déconnecter</button>
-              </div>
-              <div>Liste</div>
-              <CommandList mail={loginUserEmail || ""} />
+              </section>
+              <section className="dashboard-content">
+                <CommandList mail={loginUserEmail || ""} />
+              </section>
             </>
           )
         ) : (
           <>
-            <div>
+            <section>
+              <h3>Vous n'êtes pas connecté</h3>
+            </section>
+            <section className="dashboard-content section-login-register">
+              <h3>Connectez-vous ou créez un compte</h3>
               <FormLogin />
-            </div>
-            <div>
               <FormRegister />
-            </div>
+            </section>
           </>
         )}
       </div>
